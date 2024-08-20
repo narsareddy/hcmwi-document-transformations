@@ -59,7 +59,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/narsareddy/OxygenXMLProjects/INT1005/Data%20Files/BenefitsExtract%20(3).xml</String>
+                                    <String>file:/Users/narsareddy/OxygenXMLProjects/INT1005/Data%20Files/BenefitsExtract.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>

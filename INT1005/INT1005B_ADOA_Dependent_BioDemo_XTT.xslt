@@ -193,9 +193,11 @@
                         <Consent/>
                         <ActiveFlag>
                             <xsl:choose>
-                                <xsl:when test="count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]) = 0
+                                <xsl:when test="(bc:Relationship = 'Ex-Spouse'
+                                    or ../bc:Additional_Information/bc:Active_Status != 'Y')
+                                    and (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]) = 0
                                     or (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]) = count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Coverage_End_Date)
-                                    and max(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Coverage_End_Date/xs:date(.)) lt current-date())">
+                                    and max(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Coverage_End_Date/xs:date(.)) lt current-date()))">
                                     <xsl:text>I</xsl:text>
                                 </xsl:when>
                                 <xsl:when test="exists(bc:Inactive_Date)">
