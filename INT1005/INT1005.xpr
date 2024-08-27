@@ -10,6 +10,26 @@
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
+                                    <String>INT1005A_ADOA_Employee_BioDemo_XTT.xslt</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>INT1005B_ADOA_Dependent_BioDemo_XTT</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XML</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioStorageLocations">
+                                    <list>
+                                        <Byte>2</Byte>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
                                     <String>INT1005B_ADOA_Dependent_BioDemo_XTT.xslt</String>
                                 </field>
                                 <field name="scenarioIds">
@@ -59,7 +79,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/narsareddy/OxygenXMLProjects/INT1005/Data%20Files/BenefitsExtract.xml</String>
+                                    <String>file:/Users/narsareddy/hcmwi-document-transformations/INT1005/Data%20Files/BenefitsExtract_INT1005A_Mini.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>

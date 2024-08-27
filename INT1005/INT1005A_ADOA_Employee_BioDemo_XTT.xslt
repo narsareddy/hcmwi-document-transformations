@@ -230,18 +230,11 @@
                     <xsl:choose>
                         <xsl:when test="bc:Status/bc:Staffing_Event eq 'TRM'">
                             <xsl:choose>
-                                <xsl:when test="bc:Additional_Information/bc:Coverage_End_Date != ''">
-                                    <xsl:value-of select="format-date(max(bc:Additional_Information/bc:Coverage_End_Date/xs:date(.)), '[M01][D01][Y0001]')"/>
+                                <xsl:when test="bc:Status/bc:Termination_Date != ''">
+                                    <xsl:value-of select="format-date(bc:Status/bc:Termination_Date, '[M01][D01][Y0001]')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:choose>
-                                        <xsl:when test="bc:Status/bc:Termination_Date != ''">
-                                            <xsl:value-of select="format-date(bc:Status/bc:Termination_Date, '[M01][D01][Y0001]')"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:text>00000000</xsl:text>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
+                                    <xsl:text>00000000</xsl:text>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:when>
