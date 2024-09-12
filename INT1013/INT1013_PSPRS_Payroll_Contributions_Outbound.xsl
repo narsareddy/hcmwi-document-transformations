@@ -31,7 +31,96 @@
     <xsl:template match="wd:Report_Entry">
         <xsl:choose>
             <xsl:when
-                test="sum(wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')]/xs:decimal(wd:Amount), 0) eq 0 and sum(wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]/xs:decimal(wd:Amount), 0) eq 0">
+                test="wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')] or wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]">
+                <xsl:for-each-group select="wd:Payroll_Result_Lines_Group"
+                    group-by="wd:Deduction/substring-before(wd:ID[@wd:type = 'Deduction_Code'], ' ')">
+                    <row xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
+                        <psprs_contribution_type xtt:required="false">
+                            <xsl:choose>
+                                <xsl:when test="current-grouping-key() = 'ACR1'">
+                                    <xsl:text>ALTN</xsl:text>
+                                </xsl:when>
+                                <xsl:when test="current-grouping-key() = 'RET3DC'">
+                                    <xsl:text>DCCN</xsl:text>
+                                </xsl:when>
+                                <xsl:when test="current-grouping-key() = 'DIS_FD'">
+                                    <xsl:text>DCDT</xsl:text>
+                                </xsl:when>
+                                <xsl:when test="current-grouping-key() = 'PSPRS7'">
+                                    <xsl:text>PDAT</xsl:text>
+                                </xsl:when>
+                                <xsl:when test="current-grouping-key() = 'RET3EPSL'">
+                                    <xsl:text>EPSL</xsl:text>
+                                </xsl:when>
+                                <xsl:when test="current-grouping-key() = 'HLTH_SUB_FD'">
+                                    <xsl:text>DCHS</xsl:text>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>DBCN</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </psprs_contribution_type>
+                        <first_name xtt:required="false">
+                            <xsl:value-of select="../wd:First_Name"/>
+                        </first_name>
+                        <middle_name xtt:required="false">
+                            <xsl:value-of select="../wd:Middle_Name"/>
+                        </middle_name>
+                        <last_name xtt:required="false">
+                            <xsl:value-of select="../wd:Last_Name"/>
+                        </last_name>
+                        <ssn xtt:required="false">
+                            <xsl:value-of select="../wd:SSN"/>
+                        </ssn>
+                        <ss_withheld xtt:required="false">Y</ss_withheld>
+                        <employee_amount>
+                            <xsl:value-of
+                                select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')]/xs:decimal(wd:Amount), 0)"
+                            />
+                        </employee_amount>
+                        <employer_amount>
+                            <xsl:value-of
+                                select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]/xs:decimal(wd:Amount), 0)"
+                            />
+                        </employer_amount>
+                        <pay_end_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
+                            <xsl:value-of select="wd:Pay_End_Date"/>
+                        </pay_end_date>
+                        <check_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
+                            <xsl:value-of select="wd:Check_Date"/>
+                        </check_date>
+                        <member_pensionable_salary xtt:required="false">
+                            <xsl:value-of
+                                select="sum(../wd:Payroll_Result_Lines_Group[wd:Pay_Comp_Groups/wd:ID[@wd:type = 'Pay_Component_Group_Code'] = '401aAPSPRS']/xs:decimal(wd:Amount))"
+                            />
+                        </member_pensionable_salary>
+                        <non_payment_reason_code xtt:required="false">
+                            <xsl:if
+                                test="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')]/xs:decimal(wd:Amount), 0) eq 0 and sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]/xs:decimal(wd:Amount), 0) eq 0">
+                                <xsl:if test="../wd:Terminated eq '1'">
+                                    <xsl:text>QU</xsl:text>
+                                </xsl:if>
+                                <xsl:if test="../wd:Terminated ne '1' and ../wd:On_Leave eq '1'">
+                                    <xsl:choose>
+                                        <xsl:when
+                                            test="../wd:Leave_Type/wd:ID[@wd:type = 'Leave_of_Absence_Type_ID'] = 'FMLA_Workers_Compensation'">
+                                            <xsl:text>IL</xsl:text>
+                                        </xsl:when>
+                                        <xsl:when
+                                            test="../wd:Leave_Type/wd:ID[@wd:type = 'Leave_of_Absence_Type_ID'] = 'Military_Unpaid'">
+                                            <xsl:text>ML</xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:text>LW</xsl:text>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:if>
+                            </xsl:if>
+                        </non_payment_reason_code>
+                    </row>
+                </xsl:for-each-group>
+            </xsl:when>
+            <xsl:otherwise>
                 <row xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
                     <psprs_contribution_type xtt:required="false">
                         <xsl:choose>
@@ -111,73 +200,6 @@
                         </xsl:if>
                     </non_payment_reason_code>
                 </row>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:for-each-group select="wd:Payroll_Result_Lines_Group[wd:Amount > 0]"
-                    group-by="wd:Deduction/substring-before(wd:ID[@wd:type = 'Deduction_Code'], ' ')">
-                    <row xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
-                        <psprs_contribution_type xtt:required="false">
-                            <xsl:choose>
-                                <xsl:when test="current-grouping-key() = 'ACR1'">
-                                    <xsl:text>ALTN</xsl:text>
-                                </xsl:when>
-                                <xsl:when test="current-grouping-key() = 'RET3DC'">
-                                    <xsl:text>DCCN</xsl:text>
-                                </xsl:when>
-                                <xsl:when test="current-grouping-key() = 'DIS_FD'">
-                                    <xsl:text>DCDT</xsl:text>
-                                </xsl:when>
-                                <xsl:when test="current-grouping-key() = 'PSPRS7'">
-                                    <xsl:text>PDAT</xsl:text>
-                                </xsl:when>
-                                <xsl:when test="current-grouping-key() = 'RET3EPSL'">
-                                    <xsl:text>EPSL</xsl:text>
-                                </xsl:when>
-                                <xsl:when test="current-grouping-key() = 'HLTH_SUB_FD'">
-                                    <xsl:text>DCHS</xsl:text>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>DBCN</xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </psprs_contribution_type>
-                        <first_name xtt:required="false">
-                            <xsl:value-of select="../wd:First_Name"/>
-                        </first_name>
-                        <middle_name xtt:required="false">
-                            <xsl:value-of select="../wd:Middle_Name"/>
-                        </middle_name>
-                        <last_name xtt:required="false">
-                            <xsl:value-of select="../wd:Last_Name"/>
-                        </last_name>
-                        <ssn xtt:required="false">
-                            <xsl:value-of select="../wd:SSN"/>
-                        </ssn>
-                        <ss_withheld xtt:required="false">Y</ss_withheld>
-                        <employee_amount>
-                            <xsl:value-of
-                                select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')]/xs:decimal(wd:Amount), 0)"
-                            />
-                        </employee_amount>
-                        <employer_amount>
-                            <xsl:value-of
-                                select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]/xs:decimal(wd:Amount), 0)"
-                            />
-                        </employer_amount>
-                        <pay_end_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
-                            <xsl:value-of select="wd:Pay_End_Date"/>
-                        </pay_end_date>
-                        <check_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
-                            <xsl:value-of select="wd:Check_Date"/>
-                        </check_date>
-                        <member_pensionable_salary xtt:required="false">
-                            <xsl:value-of
-                                select="sum(../wd:Payroll_Result_Lines_Group[wd:Pay_Comp_Groups/wd:ID[@wd:type = 'Pay_Component_Group_Code'] = '401aAPSPRS']/xs:decimal(wd:Amount))"
-                            />
-                        </member_pensionable_salary>
-                        <non_payment_reason_code xtt:required="false"/>
-                    </row>
-                </xsl:for-each-group>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
