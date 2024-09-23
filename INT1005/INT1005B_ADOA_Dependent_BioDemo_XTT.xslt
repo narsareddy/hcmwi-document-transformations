@@ -80,6 +80,9 @@
                         <HeaderItem44>EffectDate</HeaderItem44>
                     </Header>
                     <xsl:apply-templates/>
+                    <EOF_Newline>
+                        <xsl:text />
+                    </EOF_Newline>
                 </File>
             </mdto:File>
         </mdto:Files>

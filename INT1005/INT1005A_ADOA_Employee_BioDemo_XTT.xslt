@@ -22,6 +22,9 @@
             <Trailer xtt:startTag="{$trailerDefault}" xtt:numberFormat="000000"
                 xtt:number="totalRowCount"
                 xtt:endTag="{substring(concat(format-date(current-date(), '[M01][D01][Y0001]'), $spaces, $spaces, $spaces, $spaces, $spaces, $spaces, $spaces), 1, 241)}"/>
+            <EOF_Newline>
+                <xsl:text />
+            </EOF_Newline>
         </File>
     </xsl:template>
 
