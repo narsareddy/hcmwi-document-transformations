@@ -97,11 +97,16 @@
                     or bc:Additional_Information/bc:Local_Address_Country = 'USA')">
             <xsl:for-each select="bc:Dependent">
                 <xsl:sort select="bc:Dependent_ID"/>
+                <xsl:variable name="currentDependentId">
+                    <xsl:value-of select="bc:Dependent_ID"/>
+                </xsl:variable>
                 <xsl:if
-                    test="bc:Dependent_ID = ..//bc:Health_Plan/bc:Dependent_Coverage/bc:Dependent_ID 
-                        and bc:Social_Security_Number ne '' 
-                        and (bc:Operation != 'NONE' 
-                        or ../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Operation != 'NONE')">
+                    test="..//bc:Health_Plan/bc:Dependent_Coverage/bc:Dependent_ID = $currentDependentId 
+                    and bc:Social_Security_Number ne '' 
+                    and (bc:Operation = 'ADD' 
+                        or bc:Operation = 'MODIFY' 
+                        or (not(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]/bc:Operation = 'NONE')
+                        and not(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]/bc:Operation = 'MODIFY')))">
                     <Record xtt:separator=",">
                         <Fc>
                             <xsl:choose>
@@ -198,9 +203,9 @@
                             <xsl:choose>
                                 <xsl:when test="(bc:Relationship = 'Ex-Spouse'
                                     or ../bc:Additional_Information/bc:Active_Status != 'Y')
-                                    and (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]) = 0
-                                    or (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]) = count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Coverage_End_Date)
-                                    and max(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = bc:Dependent_ID]/bc:Coverage_End_Date/xs:date(.)) lt current-date()))">
+                                    and (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]) = 0
+                                    or (count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]) = count(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]/bc:Coverage_End_Date)
+                                    and max(../bc:Health_Plan/bc:Dependent_Coverage[bc:Dependent_ID = $currentDependentId]/bc:Coverage_End_Date/xs:date(.)) lt current-date()))">
                                     <xsl:text>I</xsl:text>
                                 </xsl:when>
                                 <xsl:when test="exists(bc:Inactive_Date)">
