@@ -9,8 +9,8 @@
 
     <!--  Write the header row -->
     <xsl:template match="/wd:Report_Data">
-        <root xtt:separator="&#xd;&#xa;" xtt:quotes="never" xtt:severity="warning">
-            <Header xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
+        <root xtt:separator="&#xd;&#xa;" xtt:quotes="always" xtt:severity="warning">
+            <Header xtt:separator="," xtt:quotes="always" xtt:quoteStyle="double">
                 <psprs_contribution_type>ContributionCode</psprs_contribution_type>
                 <first_name>FirstName</first_name>
                 <middle_name>MiddleName</middle_name>
@@ -34,7 +34,7 @@
                 test="wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')] or wd:Payroll_Result_Lines_Group[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]">
                 <xsl:for-each-group select="wd:Payroll_Result_Lines_Group"
                     group-by="wd:Deduction/substring-before(wd:ID[@wd:type = 'Deduction_Code'], ' ')">
-                    <row xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
+                    <row xtt:separator="," xtt:quotes="always" xtt:quoteStyle="double">
                         <psprs_contribution_type xtt:required="false">
                             <xsl:choose>
                                 <xsl:when test="current-grouping-key() = 'ACR1'">
@@ -73,12 +73,12 @@
                             <xsl:value-of select="../wd:SSN"/>
                         </ssn>
                         <ss_withheld xtt:required="false">Y</ss_withheld>
-                        <employee_amount>
+                        <employee_amount etv:numberFormat="#####0.00">
                             <xsl:value-of
                                 select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' EE')]/xs:decimal(wd:Amount), 0)"
                             />
                         </employee_amount>
-                        <employer_amount>
+                        <employer_amount etv:numberFormat="#####0.00">
                             <xsl:value-of
                                 select="sum(current-group()[contains(wd:Deduction/wd:ID[@wd:type = 'Deduction_Code'], ' ER')]/xs:decimal(wd:Amount), 0)"
                             />
@@ -89,7 +89,7 @@
                         <check_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
                             <xsl:value-of select="wd:Check_Date"/>
                         </check_date>
-                        <member_pensionable_salary xtt:required="false">
+                        <member_pensionable_salary xtt:required="false" etv:numberFormat="#####0.00">
                             <xsl:value-of
                                 select="sum(../wd:Payroll_Result_Lines_Group[wd:Pay_Comp_Groups/wd:ID[@wd:type = 'Pay_Component_Group_Code'] = '401aAPSPRS']/xs:decimal(wd:Amount))"
                             />
@@ -121,7 +121,7 @@
                 </xsl:for-each-group>
             </xsl:when>
             <xsl:otherwise>
-                <row xtt:separator="," xtt:quotes="csv" xtt:quoteStyle="double">
+                <row xtt:separator="," xtt:quotes="always" xtt:quoteStyle="double">
                     <psprs_contribution_type xtt:required="false">
                         <xsl:choose>
                             <xsl:when
@@ -162,10 +162,10 @@
                         <xsl:value-of select="wd:SSN"/>
                     </ssn>
                     <ss_withheld xtt:required="false">Y</ss_withheld>
-                    <employee_amount>
+                    <employee_amount etv:numberFormat="#####0.00">
                         <xsl:text>0</xsl:text>
                     </employee_amount>
-                    <employer_amount>
+                    <employer_amount etv:numberFormat="#####0.00">
                         <xsl:text>0</xsl:text>
                     </employer_amount>
                     <pay_end_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
@@ -174,7 +174,7 @@
                     <check_date xtt:required="false" etv:dateFormat="MM/dd/yyyy">
                         <xsl:value-of select="wd:Payroll_Result_Lines_Group[1]/wd:Check_Date"/>
                     </check_date>
-                    <member_pensionable_salary xtt:required="false">
+                    <member_pensionable_salary xtt:required="false" etv:numberFormat="#####0.00">
                         <xsl:value-of
                             select="sum(wd:Payroll_Result_Lines_Group[wd:Pay_Comp_Groups/wd:ID[@wd:type = 'Pay_Component_Group_Code'] = '401aAPSPRS']/xs:decimal(wd:Amount))"
                         />
