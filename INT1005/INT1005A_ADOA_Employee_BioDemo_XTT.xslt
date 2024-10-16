@@ -14,7 +14,7 @@
     <xsl:variable name="spaces" select="'                                      '"/>
 
     <xsl:template match="/bc:Benefits_Extract_Employees">
-        <File xtt:separator="&#xd;&#xa;" xtt:align="left">
+        <File xtt:separator="&#xA;" xtt:align="left">
             <Header xtt:startTag="{$headerDefault}" xtt:endTag="{concat($today, $spaces, $spaces, $spaces, $spaces, $spaces, $spaces)}">
                 <xsl:value-of select="$today"/>
             </Header>
