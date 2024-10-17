@@ -72,7 +72,7 @@
             </Email1>
             <IsEmployee xtt:required="true">1</IsEmployee>
             <DepartmentOrProgram>
-                <xsl:value-of select="ws:Additional_Information/ws:Supervisory_Organization"/>
+                <xsl:value-of select="substring(ws:Additional_Information/ws:Supervisory_Organization, 1, 100)"/>
             </DepartmentOrProgram>
             <HireStartDate xtt:required="true" xtt:severity="error" xtt:dateFormat="MM/dd/yyyy">
                 <xsl:value-of select="ws:Status/ws:Hire_Date"/>
