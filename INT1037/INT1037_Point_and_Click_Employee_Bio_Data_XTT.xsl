@@ -85,7 +85,9 @@
                 <xsl:if test="ws:Personal/ws:Hispanic_or_Latino = 'false'">Not Hispanic/Latino</xsl:if>
             </Ethnicity>
             <Race xtt:required="false">
-                <xsl:value-of select="ws:Personal/ws:Ethnicity"/>
+                <xsl:if test="ws:Personal/count(ws:Ethnicity) eq 1">
+                    <xsl:value-of select="ws:Personal/ws:Ethnicity"/>
+                </xsl:if>
             </Race>
             <LocalZip xtt:required="false">
                 <xsl:value-of select="ws:Personal/ws:Address_Data/ws:Postal_Code"/>
