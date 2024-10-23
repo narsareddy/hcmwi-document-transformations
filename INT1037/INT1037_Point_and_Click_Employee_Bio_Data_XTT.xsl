@@ -94,12 +94,12 @@
             </LocalZip>
             <LocalAddr1 xtt:required="false">
                 <xsl:value-of
-                    select="ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_1']"
+                    select="replace(ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_1'], '\|', ' ')"
                 />
             </LocalAddr1>
             <LocalAddr2 xtt:required="false">
                 <xsl:value-of
-                    select="ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_2']"
+                    select="replace(ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_2'], '\|', ',')"
                 />
             </LocalAddr2>
             <LocalCity xtt:required="false">
