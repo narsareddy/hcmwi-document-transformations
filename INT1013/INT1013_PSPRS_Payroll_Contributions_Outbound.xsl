@@ -9,14 +9,14 @@
 
     <!--  Write the header row -->
     <xsl:template match="/wd:Report_Data">
-        <root xtt:separator="&#xd;&#xa;" xtt:quotes="always" xtt:severity="warning">
+        <root xtt:separator="&#xA;" xtt:quotes="always" xtt:severity="warning">
             <Header xtt:separator="," xtt:quotes="always" xtt:quoteStyle="double">
                 <psprs_contribution_type>ContributionCode</psprs_contribution_type>
                 <first_name>FirstName</first_name>
                 <middle_name>MiddleName</middle_name>
                 <last_name>LastName</last_name>
                 <ssn>SSN</ssn>
-                <ss_tax_withheld>IsSocialSecurityTaxWithheld</ss_tax_withheld>
+                <ss_tax_withheld>IsSocialSecurityWithheld</ss_tax_withheld>
                 <employee_amount>EmployeeContribution</employee_amount>
                 <employer_amount>EmployerContribution</employer_amount>
                 <pay_end_date>PayPeriodEnd</pay_end_date>
