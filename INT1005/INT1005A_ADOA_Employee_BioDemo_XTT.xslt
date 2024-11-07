@@ -45,23 +45,16 @@
                 </Campus_ID>
                 <Action_Code xtt:fixedLength="1" xtt:required="true">
                     <xsl:choose>
-                        <xsl:when test="bc:Status/bc:Staffing_Event eq 'HIR'">
-                            <xsl:text>N</xsl:text>
+                        <xsl:when test="bc:Life_Disability_Plan/bc:Coverage_Begin_Date 
+                            and bc:Life_Disability_Plan/bc:Coverage_Begin_Date/@bc:PriorValue = ''">
+                            <xsl:value-of select="'N'"/>
                         </xsl:when>
-                        <xsl:when test="bc:Status/bc:Staffing_Event eq 'TRM'">
-                            <xsl:text>T</xsl:text>
+                        <xsl:when test="bc:Life_Disability_Plan/bc:Coverage_End_Date 
+                            and bc:Life_Disability_Plan/bc:Coverage_End_Date/@bc:PriorValue = ''">
+                            <xsl:value-of select="'T'"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:choose>
-                                <xsl:when test="bc:Status/bc:Hire_Date = bc:Status/bc:Original_Hire_Date 
-                                        and bc:Status/bc:Hire_Date ge /bc:Benefits_Extract_Employees/bc:Header/bc:From_Effective_Date
-                                        and bc:Status/bc:Hire_Date le /bc:Benefits_Extract_Employees/bc:Header/bc:Effective_Date">
-                                    <xsl:text>N</xsl:text>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text>C</xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:value-of select="'C'"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </Action_Code>
