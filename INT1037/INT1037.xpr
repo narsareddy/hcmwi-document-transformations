@@ -59,7 +59,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/narsareddy/hcmwi-document-transformations/INT1037/Data%20Files/INT1037_Point_and_Click_Employee_Bio_Data_Sample.xml</String>
+                                    <String>file:/Users/narsareddy/hcmwi-document-transformations/INT1037/Data%20Files/output.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>

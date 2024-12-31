@@ -94,19 +94,19 @@
             </LocalZip>
             <LocalAddr1 xtt:required="false">
                 <xsl:value-of
-                    select="replace(ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_1'], '\|', ' ')"
+                    select="replace(ws:Personal/ws:Address_Data[ws:Is_Primary='true']/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_1'], '\|', ' ')"
                 />
             </LocalAddr1>
             <LocalAddr2 xtt:required="false">
                 <xsl:value-of
-                    select="replace(ws:Personal/ws:Address_Data/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_2'], '\|', ' ')"
+                    select="replace(ws:Personal/ws:Address_Data[ws:Is_Primary='true']/ws:Address_Line_Data[@ws:Type = 'ADDRESS_LINE_2'], '\|', ' ')"
                 />
             </LocalAddr2>
             <LocalCity xtt:required="false">
-                <xsl:value-of select="ws:Personal/ws:Address_Data/ws:Municipality"/>
+                <xsl:value-of select="ws:Personal/ws:Address_Data[ws:Is_Primary='true']/ws:Municipality"/>
             </LocalCity>
             <LocalState xtt:required="false">
-                <xsl:value-of select="ws:Personal/ws:Address_Data/ws:Region"/>
+                <xsl:value-of select="ws:Personal/ws:Address_Data[ws:Is_Primary='true']/ws:Region"/>
             </LocalState>
             <LocalPhone xtt:required="false">
                 <xsl:value-of select="ws:Personal/ws:Phone_Data/ws:Complete_Phone_Number"/>
